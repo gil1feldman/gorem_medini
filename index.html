@@ -100,24 +100,6 @@
       background: linear-gradient(to right, #08306b, #1c6ce5);
     }
 
-    #successMessage {
-      display: none;
-      background-color: #dff0d8;
-      color: #3c763d;
-      padding: 12px;
-      margin-top: 25px;
-      border-radius: 8px;
-      font-size: 17px;
-      font-weight: bold;
-      text-align: center;
-      animation: fadeInSuccess 0.5s ease forwards;
-    }
-
-    @keyframes fadeInSuccess {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
     .spinner {
       display: inline-block;
       width: 16px;
@@ -160,8 +142,6 @@
 
       <button type="submit"><span id="buttonText">שלח</span></button>
     </form>
-
-    <div id="successMessage">✅ הדיווח נשלח בהצלחה!</div>
   </div>
 
   <script>
@@ -172,27 +152,17 @@
       const formData = new FormData(form);
       const button = form.querySelector("button");
       const buttonText = document.getElementById("buttonText");
-      const successMessage = document.getElementById("successMessage");
 
-      // מניעת שליחה כפולה
       button.disabled = true;
       buttonText.innerHTML = 'שולח... <span class="spinner"></span>';
 
       fetch("https://script.google.com/macros/s/AKfycbw5FxARkiWCLiwaUqZ29Y7zjGxcps0JgkiaDyvqTDhy-rfLUw2EH3NKI5pot3Yd3T1B/exec", {
         method: "POST",
+        mode: "no-cors",
         body: formData
       })
-      .then(response => response.json())
-      .then(data => {
-        if (data.status === 'success') {
-          form.reset();
-          successMessage.style.display = "block";
-          setTimeout(() => {
-            successMessage.style.display = "none";
-          }, 4000);
-        } else {
-          alert("התרחשה שגיאה בשרת. נסה שוב.");
-        }
+      .then(() => {
+        form.reset();
       })
       .catch(() => {
         alert("השליחה נכשלה. בדוק חיבור לרשת.");
