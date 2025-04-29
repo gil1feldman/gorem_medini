@@ -98,16 +98,34 @@
             <button type="submit">שלח</button>
         </form>
 
-        <p id="successMessage">✅ הנתונים נשמרו (כרגע ללא שליחה).</p>
+        <p id="successMessage">✅ הנתונים נשלחו בהצלחה!</p>
     </div>
 
     <script>
         document.getElementById("reportForm").addEventListener("submit", function(event) {
             event.preventDefault();
 
+            var formData = new FormData(this);
+            var submitButton = document.querySelector("button");
             var successMessage = document.getElementById("successMessage");
-            successMessage.style.display = "block";
-            this.reset();
+
+            submitButton.disabled = true;
+            submitButton.textContent = "שולח...";
+
+            fetch("https://script.google.com/macros/s/AKfycbwJ6lVyjcUNa4kBXpfY6W-qnIGWzP6HthtNhWO3axIYElMwJgP1aMjFxauEcAed54t1/exec", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.text())
+            .then(data => {
+                successMessage.style.display = "block";
+                document.getElementById("reportForm").reset();
+            })
+            .catch(error => console.error("Error:", error))
+            .finally(() => {
+                submitButton.disabled = false;
+                submitButton.textContent = "שלח";
+            });
         });
     </script>
 
