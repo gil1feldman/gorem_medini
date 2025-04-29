@@ -1,137 +1,163 @@
 <!DOCTYPE html>
 <html lang="he">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>מי מסתתר מאחורי הגורם המדיני?</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            direction: rtl;
-            text-align: right;
-            margin: 0;
-            background: linear-gradient(to right, #eef2f3, #8dc6ff);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .container {
-            background: white;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-            width: 100%;
-            max-width: 450px;
-        }
-        h2 {
-            text-align: center;
-            color: #0A3D91;
-            margin-bottom: 25px;
-        }
-        label {
-            font-size: 16px;
-            font-weight: bold;
-            margin: 10px 0 5px;
-            display: block;
-            color: #333;
-        }
-        select, input, textarea {
-            width: 100%;
-            padding: 10px;
-            font-size: 15px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            background: #fafafa;
-            transition: border-color 0.3s;
-        }
-        select:focus, input:focus, textarea:focus {
-            border-color: #0A3D91;
-            outline: none;
-        }
-        button {
-            background-color: #0A3D91;
-            color: white;
-            padding: 12px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 16px;
-            width: 100%;
-            transition: background-color 0.3s;
-        }
-        button:hover {
-            background-color: #08306b;
-        }
-        #successMessage {
-            display: none;
-            text-align: center;
-            color: #0A3D91;
-            margin-top: 20px;
-            font-weight: bold;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>מי מסתתר מאחורי הגורם המדיני?</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      direction: rtl;
+      text-align: right;
+      margin: 0;
+      background: linear-gradient(to right, #eef2f3, #8dc6ff);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .container {
+      background: white;
+      padding: 40px 30px;
+      border-radius: 18px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+      width: 100%;
+      max-width: 480px;
+      animation: fadeIn 1s ease forwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h2 {
+      text-align: center;
+      color: #0A3D91;
+      margin-bottom: 30px;
+      font-size: 28px;
+    }
+
+    label {
+      font-size: 18px;
+      font-weight: bold;
+      margin: 12px 0 8px;
+      display: block;
+      color: #333;
+    }
+
+    select, input, textarea {
+      width: 100%;
+      padding: 12px 14px;
+      font-size: 16px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      background: #fafafa;
+      transition: all 0.3s ease;
+    }
+
+    select:focus, input:focus, textarea:focus {
+      border-color: #0A3D91;
+      background-color: #eef6ff;
+      outline: none;
+      box-shadow: 0 0 5px rgba(10, 61, 145, 0.3);
+    }
+
+    button {
+      background: linear-gradient(to right, #0A3D91, #2E8BFF);
+      color: white;
+      padding: 14px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 18px;
+      width: 100%;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background: linear-gradient(to right, #08306b, #1c6ce5);
+    }
+
+    #successMessage {
+      display: none;
+      text-align: center;
+      color: #0A3D91;
+      margin-top: 25px;
+      font-size: 18px;
+      font-weight: bold;
+      animation: fadeInSuccess 0.8s ease forwards;
+    }
+
+    @keyframes fadeInSuccess {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+  </style>
 </head>
+
 <body>
 
-    <div class="container">
-        <h2>מי מסתתר מאחורי הגורם המדיני?</h2>
+  <div class="container">
+    <h2>מי מסתתר מאחורי הגורם המדיני?</h2>
 
-        <form id="reportForm">
-            <label for="reporter">שם הכתב / ערוץ:</label>
-            <input type="text" id="reporter" name="reporter" required>
+    <form id="reportForm">
+      <label for="reporter">שם הכתב / ערוץ:</label>
+      <input type="text" id="reporter" name="reporter" required>
 
-            <label for="source">איך הוצג מקור הידיעה?</label>
-            <input type="text" id="source" name="source" required>
+      <label for="source">איך הוצג מקור הידיעה?</label>
+      <input type="text" id="source" name="source" required>
 
-            <label for="servedBibi">האם הדיווח שירת את נתניהו?</label>
-            <select id="servedBibi" name="servedBibi" required>
-                <option value="">— בחר —</option>
-                <option value="כן">כן</option>
-                <option value="לא">לא</option>
-            </select>
+      <label for="servedBibi">האם הדיווח שירת את נתניהו?</label>
+      <select id="servedBibi" name="servedBibi" required>
+        <option value="">— בחר —</option>
+        <option value="כן">כן</option>
+        <option value="לא">לא</option>
+      </select>
 
-            <label for="link">קישור לדיווח:</label>
-            <input type="url" id="link" name="link" required>
+      <label for="link">קישור לדיווח:</label>
+      <input type="url" id="link" name="link" required>
 
-            <button type="submit">שלח</button>
-        </form>
+      <button type="submit">שלח</button>
+    </form>
 
-        <p id="successMessage">✅ הנתונים נשלחו בהצלחה!</p>
-    </div>
+    <p id="successMessage">✅ הנתונים נשלחו בהצלחה!</p>
+  </div>
 
-    <script>
-        document.getElementById("reportForm").addEventListener("submit", function(event) {
-            event.preventDefault();
+  <script>
+    document.getElementById("reportForm").addEventListener("submit", function(event) {
+      event.preventDefault();
 
-            var formData = new FormData(this);
-            var submitButton = document.querySelector("button");
-            var successMessage = document.getElementById("successMessage");
+      var formData = new FormData(this);
+      var submitButton = document.querySelector("button");
+      var successMessage = document.getElementById("successMessage");
 
-            submitButton.disabled = true;
-            submitButton.textContent = "שולח...";
+      submitButton.disabled = true;
+      submitButton.textContent = "שולח...";
 
-            fetch("https://script.google.com/macros/s/AKfycbw5FxARkiWCLiwaUqZ29Y7zjGxcps0JgkiaDyvqTDhy-rfLUw2EH3NKI5pot3Yd3T1B/exec", {
-                method: "POST",
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === 'success') {
-                    successMessage.style.display = "block";
-                    document.getElementById("reportForm").reset();
-                } else {
-                    console.error("Server error:", data.message);
-                }
-            })
-            .catch(error => console.error("Fetch error:", error))
-            .finally(() => {
-                submitButton.disabled = false;
-                submitButton.textContent = "שלח";
-            });
-        });
-    </script>
+      fetch("https://script.google.com/macros/s/AKfycbw5FxARkiWCLiwaUqZ29Y7zjGxcps0JgkiaDyvqTDhy-rfLUw2EH3NKI5pot3Yd3T1B/exec", {
+          method: "POST",
+          body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+          if (data.status === 'success') {
+              successMessage.style.display = "block";
+              document.getElementById("reportForm").reset();
+          } else {
+              console.error("Server error:", data.message);
+          }
+      })
+      .catch(error => console.error("Fetch error:", error))
+      .finally(() => {
+          submitButton.disabled = false;
+          submitButton.textContent = "שלח";
+      });
+    });
+  </script>
 
 </body>
 </html>
