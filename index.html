@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>מי מסתתר מאחורי הגורם המדיני?</title>
   <style>
-    /* הסרת כל מרווח עליון כולל HTML */
     html, body, h2 {
       margin: 0;
       padding: 0;
@@ -92,23 +91,47 @@
       transition: background 0.3s ease;
     }
 
-    button:hover {
+    button:disabled {
+      background: #a0b9dd;
+      cursor: not-allowed;
+    }
+
+    button:hover:enabled {
       background: linear-gradient(to right, #08306b, #1c6ce5);
     }
 
     #successMessage {
       display: none;
-      color: #0A3D91;
+      background-color: #dff0d8;
+      color: #3c763d;
+      padding: 12px;
       margin-top: 25px;
-      font-size: 18px;
+      border-radius: 8px;
+      font-size: 17px;
       font-weight: bold;
       text-align: center;
-      animation: fadeInSuccess 0.8s ease forwards;
+      animation: fadeInSuccess 0.5s ease forwards;
     }
 
     @keyframes fadeInSuccess {
       from { opacity: 0; }
       to { opacity: 1; }
+    }
+
+    .spinner {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 2px solid #fff;
+      border-radius: 50%;
+      border-top-color: transparent;
+      animation: spin 1s linear infinite;
+      vertical-align: middle;
+      margin-left: 8px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
     }
   </style>
 </head>
@@ -135,22 +158,25 @@
       <label for="link">קישור לדיווח:</label>
       <input type="url" id="link" name="link" required>
 
-      <button type="submit">שלח</button>
+      <button type="submit"><span id="buttonText">שלח</span></button>
     </form>
 
-    <p id="successMessage">✅ הנתונים נשלחו בהצלחה!</p>
+    <div id="successMessage">✅ הדיווח נשלח בהצלחה!</div>
   </div>
 
   <script>
     document.getElementById("reportForm").addEventListener("submit", function(event) {
       event.preventDefault();
 
-      var formData = new FormData(this);
-      var submitButton = document.querySelector("button");
-      var successMessage = document.getElementById("successMessage");
+      const form = this;
+      const formData = new FormData(form);
+      const button = form.querySelector("button");
+      const buttonText = document.getElementById("buttonText");
+      const successMessage = document.getElementById("successMessage");
 
-      submitButton.disabled = true;
-      submitButton.textContent = "שולח...";
+      // מניעת שליחה כפולה
+      button.disabled = true;
+      buttonText.innerHTML = 'שולח... <span class="spinner"></span>';
 
       fetch("https://script.google.com/macros/s/AKfycbw5FxARkiWCLiwaUqZ29Y7zjGxcps0JgkiaDyvqTDhy-rfLUw2EH3NKI5pot3Yd3T1B/exec", {
         method: "POST",
@@ -159,16 +185,21 @@
       .then(response => response.json())
       .then(data => {
         if (data.status === 'success') {
+          form.reset();
           successMessage.style.display = "block";
-          document.getElementById("reportForm").reset();
+          setTimeout(() => {
+            successMessage.style.display = "none";
+          }, 4000);
         } else {
-          console.error("Server error:", data.message);
+          alert("התרחשה שגיאה בשרת. נסה שוב.");
         }
       })
-      .catch(error => console.error("Fetch error:", error))
+      .catch(() => {
+        alert("השליחה נכשלה. בדוק חיבור לרשת.");
+      })
       .finally(() => {
-        submitButton.disabled = false;
-        submitButton.textContent = "שלח";
+        button.disabled = false;
+        buttonText.innerHTML = "שלח";
       });
     });
   </script>
