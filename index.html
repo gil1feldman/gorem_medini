@@ -112,16 +112,20 @@
             submitButton.disabled = true;
             submitButton.textContent = "שולח...";
 
-            fetch("https://script.google.com/macros/s/AKfycbwJ6lVyjcUNa4kBXpfY6W-qnIGWzP6HthtNhWO3axIYElMwJgP1aMjFxauEcAed54t1/exec", {
+            fetch("https://script.google.com/macros/s/AKfycbw5FxARkiWCLiwaUqZ29Y7zjGxcps0JgkiaDyvqTDhy-rfLUw2EH3NKI5pot3Yd3T1B/exec", {
                 method: "POST",
                 body: formData
             })
-            .then(response => response.text())
+            .then(response => response.json())
             .then(data => {
-                successMessage.style.display = "block";
-                document.getElementById("reportForm").reset();
+                if (data.status === 'success') {
+                    successMessage.style.display = "block";
+                    document.getElementById("reportForm").reset();
+                } else {
+                    console.error("Server error:", data.message);
+                }
             })
-            .catch(error => console.error("Error:", error))
+            .catch(error => console.error("Fetch error:", error))
             .finally(() => {
                 submitButton.disabled = false;
                 submitButton.textContent = "שלח";
